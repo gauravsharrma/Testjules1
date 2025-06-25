@@ -46,6 +46,17 @@ header nav h1 {
     font-size: 1.8rem;
 }
 
+/* Styling for header navigation sections */
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.nav-left h1 {
+    margin-left: 15px; /* Space between Home link and Title */
+}
+/* End of header navigation section styling */
+
 main {
     flex-grow: 1;
     padding: 20px;

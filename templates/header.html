@@ -1,6 +1,16 @@
 <header>
     <nav>
-        <a href="{{ url_for('index') }}">Home</a>
-        <h1>WebApp Hub</h1>
+        <div class="nav-left">
+            <a href="{{ url_for('index') }}">Home</a>
+            <h1>WebApp Hub</h1>
+        </div>
+        <div class="nav-right">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('auth_bp.profile') }}" style="margin-right: 15px;">Profile</a>
+                <a href="{{ url_for('auth_bp.logout') }}">Logout ({{ current_user.name.split()[0] if current_user.name else current_user.email }})</a>
+            {% else %}
+                <a href="{{ url_for('auth_bp.login') }}">Login with Google</a>
+            {% endif %}
+        </div>
     </nav>
 </header>
