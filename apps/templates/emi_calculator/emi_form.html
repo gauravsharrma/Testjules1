@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}EMI Calculator{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>EMI Calculator</h2>
+    <p>Calculate your Equated Monthly Installment (EMI) for a loan.</p>
+
+    <form method="POST" action="{{ url_for('emi_calculator.emi_page') }}">
+        <div class="form-group">
+            <label for="principal">Principal Loan Amount ($):</label>
+            <input type="number" id="principal" name="principal" step="any" required
+                   value="{{ form_data.get('principal', '') }}">
+        </div>
+
+        <div class="form-group">
+            <label for="annual_rate">Annual Interest Rate (%):</label>
+            <input type="number" id="annual_rate" name="annual_rate" step="any" required
+                   value="{{ form_data.get('annual_rate', '') }}">
+        </div>
+
+        <div class="form-group">
+            <label for="years">Loan Term (Years):</label>
+            <input type="number" id="years" name="years" step="1" required
+                   value="{{ form_data.get('years', '') }}">
+        </div>
+
+        <div class="form-group">
+            <button type="submit">Calculate EMI</button>
+        </div>
+    </form>
+
+    {% if error_message %}
+        <div class="result" style="background-color: #f8d7da; color: #721c24; border-color: #f5c6cb;">
+            <p><strong>Error:</strong> {{ error_message }}</p>
+        </div>
+    {% endif %}
+
+    {% if emi_result is not none and not error_message %}
+        <div class="result">
+            <h3>Your EMI Result:</h3>
+            <p>Calculated EMI: <strong>${{ "%.2f"|format(emi_result) }}</strong> per month.</p>
+        </div>
+    {% endif %}
+     <div style="margin-top: 30px; text-align: center;">
+        <a href="{{ url_for('index') }}" class="button-like">Back to App List</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}App Hub - Home{% endblock %}
+
+{% block content %}
+<div class="controls">
+    <input type="search" id="searchInput" name="search" placeholder="Search apps by name..." onkeyup="filterApps()" value="{{ search_query }}">
+    <select id="categoryFilter" name="category" onchange="filterApps()">
+        <option value="">All Categories</option>
+        {% for category_item in categories %}
+        <option value="{{ category_item.lower() }}" {% if category_item.lower() == current_category.lower() %}selected{% endif %}>{{ category_item }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="app-list" id="appList">
+    {% if apps %}
+        {% for app_item in apps %}
+        <div class="app-card" data-name="{{ app_item.name.lower() }}" data-category="{{ app_item.category.lower() }}">
+            {% if app_item.icon %}
+            <img src="{{ url_for('static', filename='images/' ~ app_item.icon) }}" alt="{{ app_item.name }} icon" class="app-icon">
+            {% else %}
+            <img src="{{ url_for('static', filename='images/placeholder_icon.png') }}" alt="Placeholder icon" class="app-icon">
+            {% endif %}
+            <h3>{{ app_item.name }}</h3>
+            <p class="category">{{ app_item.category }}</p>
+            <p>{{ app_item.description }}</p>
+            {% if app_item.slug == 'emi-calculator' %}
+            <a href="{{ url_for('emi_calculator.emi_page') }}">Open App</a>
+            {% elif app_item.slug == 'bmi-calculator' %}
+            <a href="{{ url_for('bmi_calculator.bmi_page') }}">Open App</a>
+            {% else %}
+            <a href="{{ url_for('app_page', app_slug=app_item.slug) }}">Open App</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No apps available at the moment.</p>
+    {% endif %}
+</div>
+
+<script>
+function filterApps() {
+    const searchValue = document.getElementById('searchInput').value.toLowerCase();
+    const categoryValue = document.getElementById('categoryFilter').value.toLowerCase();
+    const appCards = document.querySelectorAll('.app-card');
+
+    appCards.forEach(card => {
+        const appName = card.getAttribute('data-name');
+        const appCategory = card.getAttribute('data-category');
+
+        const nameMatch = appName.includes(searchValue);
+        const categoryMatch = categoryValue === "" || appCategory === categoryValue;
+
+        if (nameMatch && categoryMatch) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+// Initial call to display apps correctly if filters are pre-selected (e.g. from URL params in future)
+filterApps();
+</script>
+{% endblock %}
