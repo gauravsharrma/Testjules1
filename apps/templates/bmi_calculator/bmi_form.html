@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}BMI Calculator{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>BMI Calculator</h2>
+    <p>Calculate your Body Mass Index (BMI).</p>
+
+    <form method="POST" action="{{ url_for('bmi_calculator.bmi_page') }}">
+        <div class="form-group">
+            <label for="weight_kg">Weight (kg):</label>
+            <input type="number" id="weight_kg" name="weight_kg" step="any" required
+                   value="{{ form_data.get('weight_kg', '') }}">
+        </div>
+
+        <div class="form-group">
+            <label for="height_cm">Height (cm):</label>
+            <input type="number" id="height_cm" name="height_cm" step="any" required
+                   value="{{ form_data.get('height_cm', '') }}">
+        </div>
+
+        <div class="form-group">
+            <button type="submit">Calculate BMI</button>
+        </div>
+    </form>
+
+    {% if error_message %}
+        <div class="result" style="background-color: #f8d7da; color: #721c24; border-color: #f5c6cb;">
+            <p><strong>Error:</strong> {{ error_message }}</p>
+        </div>
+    {% endif %}
+
+    {% if bmi_result is not none and not error_message %}
+        <div class="result">
+            <h3>Your BMI Result:</h3>
+            <p>Calculated BMI: <strong>{{ "%.2f"|format(bmi_result) }}</strong></p>
+            <p>Category: <strong>{{ bmi_category }}</strong></p>
+        </div>
+    {% endif %}
+     <div style="margin-top: 30px; text-align: center;">
+        <a href="{{ url_for('index') }}" class="button-like">Back to App List</a>
+    </div>
+</div>
+{% endblock %}

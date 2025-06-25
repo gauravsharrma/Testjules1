@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}{{ app.name }}{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>{{ app.name }}</h2>
+    <p>{{ app.description }}</p>
+    <p><em>Category: {{ app.category }}</em></p>
+
+    <p style="margin-top: 20px; text-align: center;">
+        This is a placeholder page for the {{ app.name }}.
+        The actual app content will be implemented here.
+    </p>
+
+    <div style="margin-top: 30px; text-align: center;">
+        <a href="{{ url_for('index') }}" class="button-like">Back to App List</a>
+    </div>
+</div>
+{% endblock %}
